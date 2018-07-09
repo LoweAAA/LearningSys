@@ -24,33 +24,34 @@ public class HistoriesServiceImpl implements HistoriesService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean addHistory(int userId, int classesId, double rate) throws Exception {
+    public boolean addHistory(int userId, int classesId) throws Exception {
         List historiesList = historiesDao.findByUserid(userId);
-        if (historiesList.size() < 20) {
-            for (Object aHistoriesList : historiesList) {
-                Histories histories = (Histories) aHistoriesList;
-                if (histories.getClassid() == classesId) {
-                    histories.setRate(rate);
-                    histories.setTime(Timestamp.valueOf(LocalDateTime.now()));
-                    historiesDao.save(histories);
-                    break;
-                }
+        for (Object aHistoriesList : historiesList) {
+            Histories histories = (Histories) aHistoriesList;
+            if (histories.getClassid() == classesId) {
+                histories.setRate(0);
+                histories.setTime(Timestamp.valueOf(LocalDateTime.now()));
+                historiesDao.save(histories);
+                return true;
             }
+        }
+        Histories histories = new Histories();
+        histories.setUserid(userId);
+        histories.setClassid(classesId);
+        histories.setRate(0);
+        histories.setTime(Timestamp.valueOf(LocalDateTime.now()));
+        if (historiesList.size() < 20) {
+            historiesDao.save(histories);
         } else {
             historiesList.sort((Comparator<Histories>) (o1, o2) -> Integer.compare(o1.getTime().compareTo(o2.getTime()), 0));
             historiesDao.delete((Histories) historiesList.get(0));
-            Histories histories = new Histories();
-            histories.setUserid(userId);
-            histories.setClassid(classesId);
-            histories.setRate(rate);
-            histories.setTime(Timestamp.valueOf(LocalDateTime.now()));
             historiesDao.save(histories);
         }
         return true;
     }
 
     @Override
-    public Histories get(int userId, int classesId) throws Exception {
+    public Histories get(int userId, int classesId){
         return historiesDao.findByUseridAndClassid(userId, classesId);
     }
 
@@ -63,6 +64,17 @@ public class HistoriesServiceImpl implements HistoriesService {
     @Transactional(rollbackFor = Exception.class)
     public boolean delete(int userId) {
         historiesDao.deleteByUserid(userId);
+        return true;
+    }
+
+    @Override
+    public boolean update(int userId, int id, double rate) {
+        Histories histories = historiesDao.findById(id).get();
+        if (histories.getUserid() == userId) {
+            histories.setRate(rate);
+            histories.setTime(Timestamp.valueOf(LocalDateTime.now()));
+            historiesDao.save(histories);
+        }
         return true;
     }
 }

@@ -1,9 +1,11 @@
 package learningsys.controller;
 
+import learningsys.entity.Histories;
 import learningsys.service.HistoriesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -40,5 +42,19 @@ public class HistoriesController {
         }
         historiesService.delete(userId);
         return ResponseUtil.success("清空成功");
+    }
+
+    @RequestMapping("/update")
+    public ResponseUtil update(@RequestParam int classesid, @RequestParam double rate, HttpSession session) {
+        Integer userId = null;
+        try {
+            userId = Integer.parseInt(session.getAttribute("userid").toString());
+        } catch (Exception e) {
+            return ResponseUtil.success();
+        }
+        Histories histories = historiesService.get(userId, classesid);
+        historiesService.update(userId, histories.getId(), rate);
+        return ResponseUtil.success();
+
     }
 }

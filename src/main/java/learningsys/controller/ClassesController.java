@@ -34,12 +34,12 @@ public class ClassesController {
     }
 
     @RequestMapping("/get")
-    public ResponseUtil get(@RequestParam int classId, @RequestParam double rate, HttpSession session) {
+    public ResponseUtil get(@RequestParam int classId, HttpSession session) {
         try {
             Classes classes = classesService.getClass(classId);
             if (session.getAttribute("userid") != null) {
                 try {
-                    historiesService.addHistory(Integer.parseInt(session.getAttribute("userid").toString()), classId, rate);
+                    historiesService.addHistory(Integer.parseInt(session.getAttribute("userid").toString()), classId);
                 } catch (Exception e) {
                     return ResponseUtil.error("系统异常");
                 }
