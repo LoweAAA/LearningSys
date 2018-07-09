@@ -11,10 +11,10 @@ public class UsersDaoTest extends BaseTest {
     @Autowired
     private UsersDao usersDao;
 
-    @Test
+    /*@Test
     public void getByUsername() {
         String username = "123456";
         Users users = usersDao.findUsersByUsername(username).get(0);
         System.out.println(users.getEmail());
-    }
+    }*/
 }
