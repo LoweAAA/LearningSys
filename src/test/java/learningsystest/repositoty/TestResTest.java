@@ -24,6 +24,12 @@ public class TestResTest extends BaseTest {
         System.out.println(testRes.findAll().get(0).getTestInt());
     }
 
+    @Test
+    public void add(){
+        learningsys.model.Test test=new learningsys.model.Test();
+        testRes.save(test);
+    }
+
 
 
 }
