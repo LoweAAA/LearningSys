@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/favourites")
+@RequestMapping("/favourite")
 public class FavouritesController {
 
     private final FavouritesService favouritesService;
@@ -51,8 +51,12 @@ public class FavouritesController {
         } catch (Exception e) {
             return ResponseUtil.error("未登录，请登陆后再进行操作");
         }
-        if (favouritesService.delete(userId, id)) {
-            return ResponseUtil.success();
+        try {
+            if (favouritesService.delete(userId, id)) {
+                return ResponseUtil.success();
+            }
+        } catch (Exception e) {
+            return ResponseUtil.error("历史记录不存在");
         }
         return ResponseUtil.error("当前用户不匹配！");
     }

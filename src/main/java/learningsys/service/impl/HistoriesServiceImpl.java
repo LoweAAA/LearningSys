@@ -68,7 +68,7 @@ public class HistoriesServiceImpl implements HistoriesService {
     }
 
     @Override
-    public boolean update(int userId, int id, double rate) {
+    public boolean update(int userId, int id, double rate) throws Exception {
         Histories histories = historiesDao.findById(id).get();
         if (histories.getUserid() == userId) {
             histories.setRate(rate);

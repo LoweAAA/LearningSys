@@ -10,5 +10,5 @@ public interface FavouritesService {
 
     boolean addFavourities(int userId, int classId);
 
-    boolean delete(int userId, int id);
+    boolean delete(int userId, int id) throws Exception;
 }

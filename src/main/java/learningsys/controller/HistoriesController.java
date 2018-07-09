@@ -45,16 +45,17 @@ public class HistoriesController {
     }
 
     @RequestMapping("/update")
-    public ResponseUtil update(@RequestParam int classesid, @RequestParam double rate, HttpSession session) {
-        Integer userId = null;
-        try {
-            userId = Integer.parseInt(session.getAttribute("userid").toString());
-        } catch (Exception e) {
-            return ResponseUtil.success();
+    public ResponseUtil update(@RequestParam int classesId, @RequestParam double rate, HttpSession session) {
+        if (session.getAttribute("userid") != null) {
+            Integer userId = Integer.parseInt(session.getAttribute("userid").toString());
+            Histories histories = historiesService.get(userId, classesId);
+            try {
+                historiesService.update(userId, histories.getId(), rate);
+                return ResponseUtil.success("已登录登陆保存成功");
+            } catch (Exception e) {
+                return ResponseUtil.success("历史记录不存在");
+            }
         }
-        Histories histories = historiesService.get(userId, classesid);
-        historiesService.update(userId, histories.getId(), rate);
-        return ResponseUtil.success();
-
+        return ResponseUtil.success("未登录保存成功");
     }
 }

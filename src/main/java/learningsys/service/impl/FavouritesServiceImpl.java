@@ -48,7 +48,7 @@ public class FavouritesServiceImpl implements FavouritesService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean delete(int userId, int id) {
+    public boolean delete(int userId, int id) throws Exception {
         Favourites favourites = favouritesDao.findById(id).get();
         if (favourites.getUserid() == userId) {
             favouritesDao.deleteById(id);
