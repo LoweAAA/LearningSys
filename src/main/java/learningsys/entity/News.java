@@ -4,6 +4,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 
 @Entity
 public class News {
@@ -11,6 +12,9 @@ public class News {
     private String desc;
     private String who;
     private String url;
+    private String type;
+    private String readability;
+    private Timestamp publishedAt;
 
     @Id
     @Column(name = "ganhuo_id")
@@ -74,5 +78,35 @@ public class News {
         result = 31 * result + (who != null ? who.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "type")
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Basic
+    @Column(name = "readability")
+    public String getReadability() {
+        return readability;
+    }
+
+    public void setReadability(String readability) {
+        this.readability = readability;
+    }
+
+    @Basic
+    @Column(name = "published_at")
+    public Timestamp getPublishedAt() {
+        return publishedAt;
+    }
+
+    public void setPublishedAt(Timestamp publishedAt) {
+        this.publishedAt = publishedAt;
     }
 }
