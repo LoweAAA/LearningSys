@@ -11,4 +11,6 @@ public interface HistoriesService {
     Histories get(int userId,int classesId) throws Exception;
 
     List query(int userId);
+
+    boolean delete(int userId);
 }

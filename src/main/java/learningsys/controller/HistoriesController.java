@@ -29,4 +29,16 @@ public class HistoriesController {
         }
         return ResponseUtil.success().put("data", historiesService.query(userId));
     }
+
+    @RequestMapping("/delete")
+    public ResponseUtil delete(HttpSession session) {
+        Integer userId = null;
+        try {
+            userId = Integer.parseInt(session.getAttribute("userid").toString());
+        } catch (Exception e) {
+            return ResponseUtil.error("未登录，请登陆后再进行操作");
+        }
+        historiesService.delete(userId);
+        return ResponseUtil.success("清空成功");
+    }
 }

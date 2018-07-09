@@ -58,4 +58,11 @@ public class HistoriesServiceImpl implements HistoriesService {
     public List query(int userId) {
         return historiesDao.findByUserid(userId);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean delete(int userId) {
+        historiesDao.deleteByUserid(userId);
+        return true;
+    }
 }
