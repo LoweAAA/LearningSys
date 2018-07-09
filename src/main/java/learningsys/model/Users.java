@@ -1,15 +1,13 @@
 package learningsys.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class Users {
     private int id;
     private String uName;
-    private String username;
+    private String usern;
     private String password;
     private byte role;
     private String city;
@@ -39,13 +37,13 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "username")
-    public String getUsername() {
-        return username;
+    @Column(name = "usern")
+    public String getUsern() {
+        return usern;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsern(String usern) {
+        this.usern = usern;
     }
 
     @Basic
@@ -128,7 +126,7 @@ public class Users {
         if (id != users.id) return false;
         if (role != users.role) return false;
         if (uName != null ? !uName.equals(users.uName) : users.uName != null) return false;
-        if (username != null ? !username.equals(users.username) : users.username != null) return false;
+        if (usern != null ? !usern.equals(users.usern) : users.usern != null) return false;
         if (password != null ? !password.equals(users.password) : users.password != null) return false;
         if (city != null ? !city.equals(users.city) : users.city != null) return false;
         if (sex != null ? !sex.equals(users.sex) : users.sex != null) return false;
@@ -143,7 +141,7 @@ public class Users {
     public int hashCode() {
         int result = id;
         result = 31 * result + (uName != null ? uName.hashCode() : 0);
-        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (usern != null ? usern.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (int) role;
         result = 31 * result + (city != null ? city.hashCode() : 0);

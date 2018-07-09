@@ -11,7 +11,7 @@ import java.util.List;
 public interface UsersDao extends JpaRepository<Users,Integer> {
 
 
-    @Query(value="from Users u where u.username=?1",nativeQuery = true)
+    @Query(value="select city from users  where usern=?1",nativeQuery = true)
     public List<Users> getByUsername(String username);
 
 }
