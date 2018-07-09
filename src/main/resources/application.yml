@@ -23,3 +23,5 @@ spring:
         testOnReturn: false
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
+    jpa:
+      show-sql: true

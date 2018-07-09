@@ -12,9 +12,9 @@ public class UsersDaoTest extends BaseTest {
     private UsersDao usersDao;
 
     @Test
-    public void getByUsername(){
-        String username="123456";
-        Users users=usersDao.getByUsername(username).get(0);
+    public void getByUsername() {
+        String username = "123456";
+        Users users = usersDao.findUsersByUsername(username).get(0);
         System.out.println(users.getEmail());
     }
 }

@@ -1,13 +1,15 @@
 package learningsys.model;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
-@Table(name = "users")
 public class Users {
     private int id;
-    private String uName;
-    private String usern;
+    private String nickname;
+    private String username;
     private String password;
     private byte role;
     private String city;
@@ -27,23 +29,23 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "uName")
-    public String getuName() {
-        return uName;
+    @Column(name = "nickname")
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setuName(String uName) {
-        this.uName = uName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Basic
-    @Column(name = "usern")
-    public String getUsern() {
-        return usern;
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsern(String usern) {
-        this.usern = usern;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Basic
@@ -125,8 +127,8 @@ public class Users {
 
         if (id != users.id) return false;
         if (role != users.role) return false;
-        if (uName != null ? !uName.equals(users.uName) : users.uName != null) return false;
-        if (usern != null ? !usern.equals(users.usern) : users.usern != null) return false;
+        if (nickname != null ? !nickname.equals(users.nickname) : users.nickname != null) return false;
+        if (username != null ? !username.equals(users.username) : users.username != null) return false;
         if (password != null ? !password.equals(users.password) : users.password != null) return false;
         if (city != null ? !city.equals(users.city) : users.city != null) return false;
         if (sex != null ? !sex.equals(users.sex) : users.sex != null) return false;
@@ -140,8 +142,8 @@ public class Users {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (uName != null ? uName.hashCode() : 0);
-        result = 31 * result + (usern != null ? usern.hashCode() : 0);
+        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (int) role;
         result = 31 * result + (city != null ? city.hashCode() : 0);
