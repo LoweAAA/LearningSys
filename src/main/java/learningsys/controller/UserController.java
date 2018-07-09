@@ -2,6 +2,7 @@ package learningsys.controller;
 
 
 import learningsys.entity.Users;
+import learningsys.model.ReturnUser;
 import learningsys.service.UsersService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,24 @@ public class UserController {
         if (users == null) {
             return ResponseUtil.error("用户名或密码错误");
         } else {
+            ReturnUser returnUser = new ReturnUser();
+            returnUser.setUserid(users.getId());
+            returnUser.setUsername(users.getUsername());
+            returnUser.setSchool(users.getSchool());
+            returnUser.setPower(users.getRole());
+            returnUser.setNickname(users.getNickname());
+            returnUser.setIdentity(users.getRole() == 0 ? "学生" : "老师");
+            returnUser.setHeadlogo(users.getHeadlogo());
             session.setAttribute("userid", users.getId());
-            return ResponseUtil.success().put("user", users);
+            return ResponseUtil.success().put("msg", "登陆成功").put("data", returnUser);
         }
     }
 
     @RequestMapping("/register")
     public ResponseUtil register(@RequestParam("username") String username,
-                        @RequestParam("password") String password,
-                        @RequestParam("email") String email,
-                        @RequestParam("role") byte role) {
+                                 @RequestParam("password") String password,
+                                 @RequestParam("email") String email,
+                                 @RequestParam("role") byte role) {
         try {
             usersService.Register(username, password, email, role);
             return ResponseUtil.success("注册成功");
