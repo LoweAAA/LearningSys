@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class TestSerImpl implements TestSer {
+
     @Autowired
     private TestRes testRes;
 
