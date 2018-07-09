@@ -1,6 +1,6 @@
 package learningsys.service;
 
-import learningsys.model.Users;
+import learningsys.entity.Users;
 
 public interface UsersService {
 

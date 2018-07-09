@@ -1,4 +1,4 @@
-package learningsys.model;
+package learningsys.entity;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -7,19 +7,19 @@ import javax.persistence.Id;
 
 @Entity
 public class News {
-    private int ganhuo_id;
+    private int ganhuoId;
     private String desc;
     private String who;
     private String url;
 
     @Id
     @Column(name = "ganhuo_id")
-    public int getId() {
-        return ganhuo_id;
+    public int getGanhuoId() {
+        return ganhuoId;
     }
 
-    public void setId(int ganhuo_id) {
-        this.ganhuo_id = ganhuo_id;
+    public void setGanhuoId(int ganhuoId) {
+        this.ganhuoId = ganhuoId;
     }
 
     @Basic
@@ -59,7 +59,7 @@ public class News {
 
         News news = (News) o;
 
-        if (ganhuo_id != news.ganhuo_id) return false;
+        if (ganhuoId != news.ganhuoId) return false;
         if (desc != null ? !desc.equals(news.desc) : news.desc != null) return false;
         if (who != null ? !who.equals(news.who) : news.who != null) return false;
         if (url != null ? !url.equals(news.url) : news.url != null) return false;
@@ -69,7 +69,7 @@ public class News {
 
     @Override
     public int hashCode() {
-        int result = ganhuo_id;
+        int result = ganhuoId;
         result = 31 * result + (desc != null ? desc.hashCode() : 0);
         result = 31 * result + (who != null ? who.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);

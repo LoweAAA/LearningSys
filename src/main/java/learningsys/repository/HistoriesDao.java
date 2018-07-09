@@ -1,9 +1,15 @@
 package learningsys.repository;
 
-import learningsys.model.Histories;
-import org.springframework.data.jpa.repository.JpaRepository;
+import learningsys.entity.Histories;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface HistoriesDao extends JpaRepository<Histories,Integer> {
+public interface HistoriesDao extends CrudRepository<Histories, Integer> {
+
+    List<Histories> findByUserid(int userId);
+
+    Histories findByUseridAndClassid(int userId, int classId);
 }

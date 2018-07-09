@@ -1,4 +1,4 @@
-package learningsys.model;
+package learningsys.entity;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -9,8 +9,8 @@ import java.sql.Timestamp;
 @Entity
 public class Favourites {
     private int id;
-    private int userId;
-    private int classId;
+    private int userid;
+    private int classid;
     private Timestamp time;
 
     @Id
@@ -24,23 +24,23 @@ public class Favourites {
     }
 
     @Basic
-    @Column(name = "userId")
-    public int getUserId() {
-        return userId;
+    @Column(name = "userid")
+    public int getUserid() {
+        return userid;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     @Basic
-    @Column(name = "classId")
-    public int getClassId() {
-        return classId;
+    @Column(name = "classid")
+    public int getClassid() {
+        return classid;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public void setClassid(int classid) {
+        this.classid = classid;
     }
 
     @Basic
@@ -61,8 +61,8 @@ public class Favourites {
         Favourites that = (Favourites) o;
 
         if (id != that.id) return false;
-        if (userId != that.userId) return false;
-        if (classId != that.classId) return false;
+        if (userid != that.userid) return false;
+        if (classid != that.classid) return false;
         if (time != null ? !time.equals(that.time) : that.time != null) return false;
 
         return true;
@@ -71,8 +71,8 @@ public class Favourites {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + userId;
-        result = 31 * result + classId;
+        result = 31 * result + userid;
+        result = 31 * result + classid;
         result = 31 * result + (time != null ? time.hashCode() : 0);
         return result;
     }

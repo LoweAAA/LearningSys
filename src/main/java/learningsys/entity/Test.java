@@ -1,4 +1,4 @@
-package learningsys.model;
+package learningsys.entity;
 
 import javax.persistence.*;
 

@@ -1,16 +1,10 @@
 package learningsystest.repositoty;
 
 
-import learningsys.Application;
 import learningsys.repository.TestRes;
 import learningsystest.BaseTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
 
 
 public class TestResTest extends BaseTest {
@@ -26,7 +20,7 @@ public class TestResTest extends BaseTest {
 
     @Test
     public void add(){
-        learningsys.model.Test test=new learningsys.model.Test();
+        learningsys.entity.Test test=new learningsys.entity.Test();
         testRes.save(test);
     }
 

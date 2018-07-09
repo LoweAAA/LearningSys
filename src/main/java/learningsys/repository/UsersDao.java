@@ -1,7 +1,6 @@
 package learningsys.repository;
 
-import learningsys.model.Users;
-import org.springframework.data.jpa.repository.Query;
+import learningsys.entity.Users;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

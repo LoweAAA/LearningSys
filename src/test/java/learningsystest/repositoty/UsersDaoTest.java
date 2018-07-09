@@ -1,6 +1,6 @@
 package learningsystest.repositoty;
 
-import learningsys.model.Users;
+import learningsys.entity.Users;
 import learningsys.repository.UsersDao;
 import learningsystest.BaseTest;
 import org.junit.Test;

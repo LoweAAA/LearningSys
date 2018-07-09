@@ -1,6 +1,6 @@
 package learningsys.service.impl;
 
-import learningsys.model.Test;
+import learningsys.entity.Test;
 import learningsys.repository.TestRes;
 import learningsys.service.TestSer;
 import org.springframework.beans.factory.annotation.Autowired;
