@@ -29,7 +29,6 @@ public class HistoriesServiceImpl implements HistoriesService {
         for (Object aHistoriesList : historiesList) {
             Histories histories = (Histories) aHistoriesList;
             if (histories.getClassid() == classesId) {
-                histories.setRate(0);
                 histories.setTime(Timestamp.valueOf(LocalDateTime.now()));
                 historiesDao.save(histories);
                 return true;
