@@ -40,6 +40,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "用户注册")
     @RequestMapping("/register")
     public ResponseUtil register(@RequestParam("username") String username,
                                  @RequestParam("password") String password,

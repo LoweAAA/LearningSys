@@ -1,5 +1,6 @@
 package learningsys.controller;
 
+import io.swagger.annotations.ApiOperation;
 import learningsys.entity.Histories;
 import learningsys.service.HistoriesService;
 import learningsys.utils.ResponseUtil;
@@ -21,6 +22,7 @@ public class HistoriesController {
         this.historiesService = historiesService;
     }
 
+    @ApiOperation(value = "查看历史记录")
     @RequestMapping("/query")
     public ResponseUtil query(HttpSession session) {
         Integer userId = null;
@@ -32,6 +34,7 @@ public class HistoriesController {
         return ResponseUtil.success().put("data", historiesService.query(userId));
     }
 
+    @ApiOperation(value = "清空历史记录")
     @RequestMapping("/delete")
     public ResponseUtil delete(HttpSession session) {
         Integer userId = null;
@@ -44,6 +47,7 @@ public class HistoriesController {
         return ResponseUtil.success("清空成功");
     }
 
+    @ApiOperation(value = "修改历史记录（视频观看时间保存）")
     @RequestMapping("/update")
     public ResponseUtil update(@RequestParam int classesId, @RequestParam double rate, HttpSession session) {
         if (session.getAttribute("userid") != null) {

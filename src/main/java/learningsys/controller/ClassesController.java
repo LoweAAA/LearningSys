@@ -1,5 +1,6 @@
 package learningsys.controller;
 
+import io.swagger.annotations.ApiOperation;
 import learningsys.entity.Classes;
 import learningsys.entity.Histories;
 import learningsys.model.ReturnClass;
@@ -27,12 +28,14 @@ public class ClassesController {
         this.historiesService = historiesService;
     }
 
+    @ApiOperation(value = "课程视频查询")
     @RequestMapping("/query")
     public ResponseUtil query(@RequestParam String className) {
         List classes = classesService.query(className);
         return ResponseUtil.success().put("data", classes);
     }
 
+    @ApiOperation(value = "课程视频观看")
     @RequestMapping("/get")
     public ResponseUtil get(@RequestParam int classId, HttpSession session) {
         try {

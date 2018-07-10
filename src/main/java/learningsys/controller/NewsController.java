@@ -1,5 +1,6 @@
 package learningsys.controller;
 
+import io.swagger.annotations.ApiOperation;
 import learningsys.service.NewsService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class NewsController {
         this.newsService = newsService;
     }
 
+    @ApiOperation(value = "查看新闻")
     @RequestMapping("/query")
     public ResponseUtil query() {
         List news = newsService.query();
