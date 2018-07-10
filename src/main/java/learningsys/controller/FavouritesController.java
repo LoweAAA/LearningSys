@@ -4,15 +4,13 @@ import io.swagger.annotations.ApiOperation;
 import learningsys.service.FavouritesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/favourite")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class FavouritesController {
 
     private final FavouritesService favouritesService;

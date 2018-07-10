@@ -5,7 +5,7 @@ public class ReturnClass {
     private String classname;
     private String classurl;
     private int classprice;
-    private int classteacher;
+    private String classteacher;
     private String classdetail;
     private double rate;
 
@@ -41,11 +41,11 @@ public class ReturnClass {
         this.classprice = classprice;
     }
 
-    public int getClassteacher() {
+    public String getClassteacher() {
         return classteacher;
     }
 
-    public void setClassteacher(int classteacher) {
+    public void setClassteacher(String classteacher) {
         this.classteacher = classteacher;
     }
 

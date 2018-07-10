@@ -6,27 +6,28 @@ import learningsys.entity.Histories;
 import learningsys.model.ReturnClass;
 import learningsys.service.ClassesService;
 import learningsys.service.HistoriesService;
+import learningsys.service.UsersService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
 @RequestMapping("/class")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ClassesController {
 
     private final ClassesService classesService;
     private final HistoriesService historiesService;
+    private final UsersService usersService;
 
     @Autowired
-    public ClassesController(ClassesService classesService, HistoriesService historiesService) {
+    public ClassesController(ClassesService classesService, HistoriesService historiesService, UsersService usersService) {
         this.classesService = classesService;
         this.historiesService = historiesService;
+        this.usersService = usersService;
     }
 
     @ApiOperation(value = "课程视频查询")
@@ -53,7 +54,7 @@ public class ClassesController {
             returnClass.setClassname(classes.getClassname());
             returnClass.setClassdetail(classes.getClassdetail());
             returnClass.setClassprice(classes.getClassprice());
-            returnClass.setClassteacher(classes.getClassteacher());
+            returnClass.setClassteacher(usersService.get(classes.getClassteacher()).getNickname());
             returnClass.setClassurl(classes.getClassurl());
             returnClass.setRate(0);
             if (session.getAttribute("userid") != null) {

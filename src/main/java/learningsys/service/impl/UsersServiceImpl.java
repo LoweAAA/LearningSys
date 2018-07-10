@@ -39,5 +39,10 @@ public class UsersServiceImpl implements UsersService {
         usersDao.save(users);
     }
 
+    @Override
+    public Users get(int id) throws Exception{
+        return usersDao.findById(id).get();
+    }
+
 
 }

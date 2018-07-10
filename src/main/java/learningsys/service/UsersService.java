@@ -9,4 +9,5 @@ public interface UsersService {
                          String password,
                         String email,
                          byte role);
+    Users get(int id) throws Exception;
 }

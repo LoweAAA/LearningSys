@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import learningsys.service.NewsService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/news")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class NewsController {
 
     private final NewsService newsService;
