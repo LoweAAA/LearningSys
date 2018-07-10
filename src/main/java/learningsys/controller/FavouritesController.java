@@ -32,7 +32,7 @@ public class FavouritesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error("未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
         }
         favouritesService.addFavourities(userId, rowClasses.getId());
         return ResponseUtil.success("收藏成功");
@@ -46,7 +46,7 @@ public class FavouritesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error("未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
         }
         return ResponseUtil.success().put("data", favouritesService.query(userId));
     }
@@ -59,7 +59,7 @@ public class FavouritesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error("未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
         }
         try {
             if (favouritesService.delete(userId, rowFavourites.getId())) {

@@ -30,7 +30,7 @@ public class HistoriesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error("未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
         }
         return ResponseUtil.success().put("data", historiesService.query(userId));
     }
@@ -42,7 +42,7 @@ public class HistoriesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error("未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
         }
         historiesService.delete(userId);
         return ResponseUtil.success("清空成功");
@@ -56,7 +56,7 @@ public class HistoriesController {
             Histories histories = historiesService.get(userId, rowHistories.getClassId());
             try {
                 historiesService.update(userId, histories.getId(), rowHistories.getRate());
-                return ResponseUtil.success("已登录登陆保存成功");
+                return ResponseUtil.success();
             } catch (Exception e) {
                 return ResponseUtil.success("历史记录不存在");
             }

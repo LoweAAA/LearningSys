@@ -47,29 +47,23 @@ public class ClassesController {
     public ResponseUtil get(@ApiParam(value = "观看的课程id") @RequestBody GetClassId rowClasses, HttpSession session) {
         try {
             Classes classes = classesService.getClass(rowClasses.getId());
+            ReturnClass returnClass = new ReturnClass();
+            returnClass.setRate(0);
             if (session.getAttribute("userid") != null) {
                 try {
+                    Histories histories = historiesService.get(Integer.parseInt(session.getAttribute("userid").toString()), rowClasses.getId());
+                    returnClass.setRate(histories.getRate());
                     historiesService.addHistory(Integer.parseInt(session.getAttribute("userid").toString()), rowClasses.getId());
                 } catch (Exception e) {
                     return ResponseUtil.error("系统异常");
                 }
             }
-            ReturnClass returnClass = new ReturnClass();
             returnClass.setId(classes.getId());
             returnClass.setClassname(classes.getClassname());
             returnClass.setClassdetail(classes.getClassdetail());
             returnClass.setClassprice(classes.getClassprice());
             returnClass.setClassteacher(usersService.get(classes.getClassteacher()).getNickname());
             returnClass.setClassurl(classes.getClassurl());
-            returnClass.setRate(0);
-            if (session.getAttribute("userid") != null) {
-                try {
-                    Histories histories = historiesService.get(Integer.parseInt(session.getAttribute("userid").toString()), rowClasses.getId());
-                    returnClass.setRate(histories.getRate());
-                } catch (Exception e) {
-                    return ResponseUtil.error("系统异常");
-                }
-            }
             return ResponseUtil.success().put("data", returnClass);
         } catch (Exception e) {
             return ResponseUtil.error("未找到对应课程");

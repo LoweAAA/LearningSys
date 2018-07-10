@@ -12,6 +12,13 @@ public class ResponseUtil extends HashMap {
         return responseUtil;
     }
 
+    public static ResponseUtil error(Integer status, String msg) {
+        ResponseUtil responseUtil = new ResponseUtil();
+        responseUtil.put("status", status);
+        responseUtil.put("msg", msg);
+        return responseUtil;
+    }
+
     public static ResponseUtil success(Map<String, Object> map) {
         ResponseUtil r = ResponseUtil.success();
         r.putAll(map);
@@ -27,7 +34,7 @@ public class ResponseUtil extends HashMap {
     public static ResponseUtil success(String msg) {
         ResponseUtil responseUtil = new ResponseUtil();
         responseUtil.put("status", 200);
-        responseUtil.put("msg",msg);
+        responseUtil.put("msg", msg);
         return responseUtil;
     }
 
