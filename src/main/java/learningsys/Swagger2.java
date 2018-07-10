@@ -10,10 +10,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-/**
- * @author sam
- * @since 2017/7/17
- */
 @Configuration
 @EnableSwagger2
 public class Swagger2 {
@@ -22,15 +18,15 @@ public class Swagger2 {
     public Docket createRestApi() {
 
         ApiInfo apiInfo = new ApiInfoBuilder()
-                .title("Sam 项目接口文档")
-                .description("Magical Sam 项目的接口文档，符合RESTful API。")
+                .title("LearningSys")
+                .description("LearningSys的API文档")
                 .version("1.0")
                 .build();
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("learningsys.controller")) //以扫描包的方式
+                .apis(RequestHandlerSelectors.basePackage("learningsys.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
