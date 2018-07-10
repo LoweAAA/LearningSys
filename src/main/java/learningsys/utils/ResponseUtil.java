@@ -5,10 +5,10 @@ import java.util.Map;
 
 public class ResponseUtil extends HashMap {
 
-    public static ResponseUtil error(String message) {
+    public static ResponseUtil error(String msg) {
         ResponseUtil responseUtil = new ResponseUtil();
         responseUtil.put("status", 201);
-        responseUtil.put("message", message);
+        responseUtil.put("msg", msg);
         return responseUtil;
     }
 
@@ -24,10 +24,10 @@ public class ResponseUtil extends HashMap {
         return responseUtil;
     }
 
-    public static ResponseUtil success(String message) {
+    public static ResponseUtil success(String msg) {
         ResponseUtil responseUtil = new ResponseUtil();
         responseUtil.put("status", 200);
-        responseUtil.put("message",message);
+        responseUtil.put("msg",msg);
         return responseUtil;
     }
 

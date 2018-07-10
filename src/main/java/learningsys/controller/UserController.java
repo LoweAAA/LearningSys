@@ -1,6 +1,7 @@
 package learningsys.controller;
 
 
+import io.swagger.annotations.ApiOperation;
 import learningsys.entity.Users;
 import learningsys.model.ReturnUser;
 import learningsys.service.UsersService;
@@ -19,6 +20,7 @@ public class UserController {
     @Autowired
     private UsersService usersService;
 
+    @ApiOperation(value = "用户登录")
     @RequestMapping("/confirm")
     public ResponseUtil confirm(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
         Users users = usersService.Confirm(username, password);
@@ -34,7 +36,7 @@ public class UserController {
             returnUser.setIdentity(users.getRole() == 0 ? "学生" : "老师");
             returnUser.setHeadlogo(users.getHeadlogo());
             session.setAttribute("userid", users.getId());
-            return ResponseUtil.success().put("msg", "登陆成功").put("data", returnUser);
+            return ResponseUtil.success("登录成功").put("data", returnUser);
         }
     }
 
