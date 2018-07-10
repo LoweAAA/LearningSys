@@ -8,6 +8,7 @@ import learningsys.service.UsersService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class UserController {
     private UsersService usersService;
 
     @ApiOperation(value = "用户登录")
-    @RequestMapping("/confirm")
+    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
     public ResponseUtil confirm(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
         Users users = usersService.Confirm(username, password);
         if (users == null) {
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "用户注册")
-    @RequestMapping("/register")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseUtil register(@RequestParam("username") String username,
                                  @RequestParam("password") String password,
                                  @RequestParam("email") String email,

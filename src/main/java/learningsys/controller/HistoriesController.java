@@ -6,6 +6,7 @@ import learningsys.service.HistoriesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class HistoriesController {
     }
 
     @ApiOperation(value = "查看历史记录")
-    @RequestMapping("/query")
+    @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ResponseUtil query(HttpSession session) {
         Integer userId = null;
         try {
@@ -35,7 +36,7 @@ public class HistoriesController {
     }
 
     @ApiOperation(value = "清空历史记录")
-    @RequestMapping("/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public ResponseUtil delete(HttpSession session) {
         Integer userId = null;
         try {
@@ -48,7 +49,7 @@ public class HistoriesController {
     }
 
     @ApiOperation(value = "修改历史记录（视频观看时间保存）")
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseUtil update(@RequestParam int classesId, @RequestParam double rate, HttpSession session) {
         if (session.getAttribute("userid") != null) {
             Integer userId = Integer.parseInt(session.getAttribute("userid").toString());

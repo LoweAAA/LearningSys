@@ -5,6 +5,7 @@ import learningsys.service.FavouritesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ public class FavouritesController {
     }
 
     @ApiOperation(value = "添加到收藏夹")
-    @RequestMapping("/add")
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ResponseUtil addFavourites(@RequestParam int classesId, HttpSession session) {
         Integer userId = null;
         try {
@@ -35,7 +36,7 @@ public class FavouritesController {
     }
 
     @ApiOperation(value = "查看收藏夹")
-    @RequestMapping("/query")
+    @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ResponseUtil query(HttpSession session) {
         Integer userId = null;
         try {
@@ -47,7 +48,7 @@ public class FavouritesController {
     }
 
     @ApiOperation(value = "删除收藏夹中某一记录")
-    @RequestMapping("/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
     public ResponseUtil delete(@RequestParam int id, HttpSession session) {
         Integer userId = null;
         try {

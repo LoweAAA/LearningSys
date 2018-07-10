@@ -9,6 +9,7 @@ import learningsys.service.HistoriesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,14 +30,14 @@ public class ClassesController {
     }
 
     @ApiOperation(value = "课程视频查询")
-    @RequestMapping("/query")
+    @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ResponseUtil query(@RequestParam String className) {
         List classes = classesService.query(className);
         return ResponseUtil.success().put("data", classes);
     }
 
     @ApiOperation(value = "课程视频观看")
-    @RequestMapping("/get")
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
     public ResponseUtil get(@RequestParam int classId, HttpSession session) {
         try {
             Classes classes = classesService.getClass(classId);
