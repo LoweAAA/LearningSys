@@ -1,8 +1,10 @@
 package learningsys.controller;
 
 import io.swagger.annotations.ApiOperation;
-import learningsys.entity.Classes;
+import io.swagger.annotations.ApiParam;
 import learningsys.entity.Favourites;
+import learningsys.model.GetClassId;
+import learningsys.model.GetFavouriteId;
 import learningsys.service.FavouritesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,9 @@ public class FavouritesController {
     }
 
     @ApiOperation(value = "添加到收藏夹")
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseUtil addFavourites(@RequestBody Classes rowClasses, HttpSession session) {
+    public ResponseUtil addFavourites(@ApiParam(value = "课程id") @RequestBody GetClassId rowClasses, HttpSession session) {
         Integer userId = null;
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
@@ -37,7 +39,7 @@ public class FavouritesController {
     }
 
     @ApiOperation(value = "查看收藏夹")
-    @RequestMapping(value = "/query", method = RequestMethod.GET)
+    @RequestMapping(value = "/query", method = RequestMethod.POST)
     @ResponseBody
     public ResponseUtil query(HttpSession session) {
         Integer userId = null;
@@ -50,9 +52,9 @@ public class FavouritesController {
     }
 
     @ApiOperation(value = "删除收藏夹中某一记录")
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseUtil delete(@RequestBody Favourites rowFavourites, HttpSession session) {
+    public ResponseUtil delete(@ApiParam(value = "收藏记录的id") @RequestBody GetFavouriteId rowFavourites, HttpSession session) {
         Integer userId = null;
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());

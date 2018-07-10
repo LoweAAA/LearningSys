@@ -1,7 +1,9 @@
 package learningsys.controller;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import learningsys.entity.Histories;
+import learningsys.model.GetHistory;
 import learningsys.service.HistoriesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ public class HistoriesController {
     }
 
     @ApiOperation(value = "查看历史记录")
-    @RequestMapping(value = "/query", method = RequestMethod.GET)
+    @RequestMapping(value = "/query", method = RequestMethod.POST)
     public ResponseUtil query(HttpSession session) {
         Integer userId = null;
         try {
@@ -34,7 +36,7 @@ public class HistoriesController {
     }
 
     @ApiOperation(value = "清空历史记录")
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResponseUtil delete(HttpSession session) {
         Integer userId = null;
         try {
@@ -48,10 +50,10 @@ public class HistoriesController {
 
     @ApiOperation(value = "修改历史记录（视频观看时间保存）")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseUtil update(@RequestBody Histories rowHistories, HttpSession session) {
+    public ResponseUtil update(@ApiParam(value = "当前视频id号和观看进度rate") @RequestBody GetHistory rowHistories, HttpSession session) {
         if (session.getAttribute("userid") != null) {
             Integer userId = Integer.parseInt(session.getAttribute("userid").toString());
-            Histories histories = historiesService.get(userId, rowHistories.getClassid());
+            Histories histories = historiesService.get(userId, rowHistories.getClassId());
             try {
                 historiesService.update(userId, histories.getId(), rowHistories.getRate());
                 return ResponseUtil.success("已登录登陆保存成功");

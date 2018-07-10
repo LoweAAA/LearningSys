@@ -2,7 +2,10 @@ package learningsys.controller;
 
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import learningsys.entity.Users;
+import learningsys.model.GetRegister;
+import learningsys.model.GetUser;
 import learningsys.model.ReturnUser;
 import learningsys.service.UsersService;
 import learningsys.utils.ResponseUtil;
@@ -22,7 +25,7 @@ public class UserController {
     @ApiOperation(value = "用户登录")
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseUtil confirm(@RequestBody Users rowUsers, HttpSession session) {
+    public ResponseUtil confirm(@ApiParam(value = "用户名和密码") @RequestBody GetUser rowUsers, HttpSession session) {
         Users users = usersService.Confirm(rowUsers.getUsername(), rowUsers.getPassword());
         if (users == null) {
             return ResponseUtil.error("用户名或密码错误");
@@ -43,9 +46,9 @@ public class UserController {
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseUtil register(@RequestBody Users rowUsers) {
+    public ResponseUtil register(@ApiParam(value = "用户名、密码、email、角色（0学生 1老师）") @RequestBody GetRegister rowUsers) {
         try {
-            usersService.Register(rowUsers.getUsername(),rowUsers.getPassword(),rowUsers.getEmail(),rowUsers.getRole());
+            usersService.Register(rowUsers.getUsername(), rowUsers.getPassword(), rowUsers.getEmail(), rowUsers.getRole());
             return ResponseUtil.success("注册成功");
         } catch (Exception e) {
             return ResponseUtil.error("注册失败");

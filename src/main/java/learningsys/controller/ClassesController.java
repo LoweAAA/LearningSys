@@ -1,8 +1,11 @@
 package learningsys.controller;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import learningsys.entity.Classes;
 import learningsys.entity.Histories;
+import learningsys.model.GetClassId;
+import learningsys.model.GetClassName;
 import learningsys.model.ReturnClass;
 import learningsys.service.ClassesService;
 import learningsys.service.HistoriesService;
@@ -31,17 +34,17 @@ public class ClassesController {
     }
 
     @ApiOperation(value = "课程视频查询")
-    @RequestMapping(value = "/query", method = RequestMethod.GET)
+    @RequestMapping(value = "/query", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseUtil query(@RequestBody Classes rowClasses) {
-        List classes = classesService.query(rowClasses.getClassname());
+    public ResponseUtil query(@ApiParam(value = "查询的课程名") @RequestBody GetClassName rowClasses) {
+        List classes = classesService.query(rowClasses.getClassName());
         return ResponseUtil.success().put("data", classes);
     }
 
     @ApiOperation(value = "课程视频观看")
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/get", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseUtil get(@RequestBody Classes rowClasses, HttpSession session) {
+    public ResponseUtil get(@ApiParam(value = "观看的课程id") @RequestBody GetClassId rowClasses, HttpSession session) {
         try {
             Classes classes = classesService.getClass(rowClasses.getId());
             if (session.getAttribute("userid") != null) {

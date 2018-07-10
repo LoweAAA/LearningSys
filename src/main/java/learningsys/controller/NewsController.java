@@ -24,7 +24,7 @@ public class NewsController {
     }
 
     @ApiOperation(value = "查看新闻")
-    @RequestMapping(value = "/query", method = RequestMethod.GET)
+    @RequestMapping(value = "/query", method = RequestMethod.POST)
     public ResponseUtil query() {
         List news = newsService.query();
         return ResponseUtil.success().put("data", news).put("count", news.size());
