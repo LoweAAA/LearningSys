@@ -48,12 +48,12 @@ public class HistoriesController {
 
     @ApiOperation(value = "修改历史记录（视频观看时间保存）")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ResponseUtil update(@RequestParam int classesId, @RequestParam double rate, HttpSession session) {
+    public ResponseUtil update(@RequestBody Histories rowHistories, HttpSession session) {
         if (session.getAttribute("userid") != null) {
             Integer userId = Integer.parseInt(session.getAttribute("userid").toString());
-            Histories histories = historiesService.get(userId, classesId);
+            Histories histories = historiesService.get(userId, rowHistories.getClassid());
             try {
-                historiesService.update(userId, histories.getId(), rate);
+                historiesService.update(userId, histories.getId(), rowHistories.getRate());
                 return ResponseUtil.success("已登录登陆保存成功");
             } catch (Exception e) {
                 return ResponseUtil.success("历史记录不存在");

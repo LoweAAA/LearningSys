@@ -1,6 +1,8 @@
 package learningsys.controller;
 
 import io.swagger.annotations.ApiOperation;
+import learningsys.entity.Classes;
+import learningsys.entity.Favourites;
 import learningsys.service.FavouritesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +24,21 @@ public class FavouritesController {
 
     @ApiOperation(value = "添加到收藏夹")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public ResponseUtil addFavourites(@RequestParam int classesId, HttpSession session) {
+    @ResponseBody
+    public ResponseUtil addFavourites(@RequestBody Classes rowClasses, HttpSession session) {
         Integer userId = null;
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
             return ResponseUtil.error("未登录，请登陆后再进行操作");
         }
-        favouritesService.addFavourities(userId, classesId);
+        favouritesService.addFavourities(userId, rowClasses.getId());
         return ResponseUtil.success("收藏成功");
     }
 
     @ApiOperation(value = "查看收藏夹")
     @RequestMapping(value = "/query", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseUtil query(HttpSession session) {
         Integer userId = null;
         try {
@@ -47,7 +51,8 @@ public class FavouritesController {
 
     @ApiOperation(value = "删除收藏夹中某一记录")
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public ResponseUtil delete(@RequestParam int id, HttpSession session) {
+    @ResponseBody
+    public ResponseUtil delete(@RequestBody Favourites rowFavourites, HttpSession session) {
         Integer userId = null;
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
@@ -55,7 +60,7 @@ public class FavouritesController {
             return ResponseUtil.error("未登录，请登陆后再进行操作");
         }
         try {
-            if (favouritesService.delete(userId, id)) {
+            if (favouritesService.delete(userId, rowFavourites.getId())) {
                 return ResponseUtil.success();
             }
         } catch (Exception e) {

@@ -32,19 +32,21 @@ public class ClassesController {
 
     @ApiOperation(value = "课程视频查询")
     @RequestMapping(value = "/query", method = RequestMethod.GET)
-    public ResponseUtil query(@RequestParam String className) {
-        List classes = classesService.query(className);
+    @ResponseBody
+    public ResponseUtil query(@RequestBody Classes rowClasses) {
+        List classes = classesService.query(rowClasses.getClassname());
         return ResponseUtil.success().put("data", classes);
     }
 
     @ApiOperation(value = "课程视频观看")
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public ResponseUtil get(@RequestParam int classId, HttpSession session) {
+    @ResponseBody
+    public ResponseUtil get(@RequestBody Classes rowClasses, HttpSession session) {
         try {
-            Classes classes = classesService.getClass(classId);
+            Classes classes = classesService.getClass(rowClasses.getId());
             if (session.getAttribute("userid") != null) {
                 try {
-                    historiesService.addHistory(Integer.parseInt(session.getAttribute("userid").toString()), classId);
+                    historiesService.addHistory(Integer.parseInt(session.getAttribute("userid").toString()), rowClasses.getId());
                 } catch (Exception e) {
                     return ResponseUtil.error("系统异常");
                 }
@@ -59,7 +61,7 @@ public class ClassesController {
             returnClass.setRate(0);
             if (session.getAttribute("userid") != null) {
                 try {
-                    Histories histories = historiesService.get(Integer.parseInt(session.getAttribute("userid").toString()), classId);
+                    Histories histories = historiesService.get(Integer.parseInt(session.getAttribute("userid").toString()), rowClasses.getId());
                     returnClass.setRate(histories.getRate());
                 } catch (Exception e) {
                     return ResponseUtil.error("系统异常");

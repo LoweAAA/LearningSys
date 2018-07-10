@@ -21,8 +21,9 @@ public class UserController {
 
     @ApiOperation(value = "用户登录")
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
-    public ResponseUtil confirm(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
-        Users users = usersService.Confirm(username, password);
+    @ResponseBody
+    public ResponseUtil confirm(@RequestBody Users rowUsers, HttpSession session) {
+        Users users = usersService.Confirm(rowUsers.getUsername(), rowUsers.getPassword());
         if (users == null) {
             return ResponseUtil.error("用户名或密码错误");
         } else {
@@ -41,12 +42,10 @@ public class UserController {
 
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseUtil register(@RequestParam("username") String username,
-                                 @RequestParam("password") String password,
-                                 @RequestParam("email") String email,
-                                 @RequestParam("role") byte role) {
+    @ResponseBody
+    public ResponseUtil register(@RequestBody Users rowUsers) {
         try {
-            usersService.Register(username, password, email, role);
+            usersService.Register(rowUsers.getUsername(),rowUsers.getPassword(),rowUsers.getEmail(),rowUsers.getRole());
             return ResponseUtil.success("注册成功");
         } catch (Exception e) {
             return ResponseUtil.error("注册失败");
