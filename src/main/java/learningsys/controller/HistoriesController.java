@@ -52,6 +52,7 @@ public class HistoriesController {
                 return ResponseUtil.error("课程已删除");
             }
             returnFavourite.setClassId(historie.getClassid());
+            returnFavourite.setRate(historie.getRate());
             historyList.add(returnFavourite);
         }
         return ResponseUtil.success().put("data", historyList);
