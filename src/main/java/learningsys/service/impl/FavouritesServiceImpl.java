@@ -38,12 +38,16 @@ public class FavouritesServiceImpl implements FavouritesService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean addFavourities(int userId, int classId) {
-        Favourites favourites = new Favourites();
-        favourites.setUserid(userId);
-        favourites.setClassid(classId);
-        favourites.setTime(Timestamp.valueOf(LocalDateTime.now()));
-        favouritesDao.save(favourites);
-        return true;
+        Favourites favourite = favouritesDao.findByClassidAndUserid(classId, userId);
+        if (favourite == null) {
+            Favourites favourites = new Favourites();
+            favourites.setUserid(userId);
+            favourites.setClassid(classId);
+            favourites.setTime(Timestamp.valueOf(LocalDateTime.now()));
+            favouritesDao.save(favourites);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -55,5 +59,28 @@ public class FavouritesServiceImpl implements FavouritesService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isFavourite(int userId, int classId) {
+        Favourites favourite = favouritesDao.findByClassidAndUserid(classId, userId);
+        return favourite == null;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean addAndDelete(int userId, int classId) throws Exception {
+        Favourites favourite = favouritesDao.findByClassidAndUserid(classId, userId);
+        if (favourite == null) {
+            Favourites favourites = new Favourites();
+            favourites.setUserid(userId);
+            favourites.setClassid(classId);
+            favourites.setTime(Timestamp.valueOf(LocalDateTime.now()));
+            favouritesDao.save(favourites);
+            return true;
+        } else {
+            favouritesDao.deleteById(favourite.getId());
+            return true;
+        }
     }
 }

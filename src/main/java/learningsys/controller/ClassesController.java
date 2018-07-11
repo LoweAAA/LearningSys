@@ -8,6 +8,7 @@ import learningsys.model.GetClassId;
 import learningsys.model.GetClassName;
 import learningsys.model.ReturnClass;
 import learningsys.service.ClassesService;
+import learningsys.service.FavouritesService;
 import learningsys.service.HistoriesService;
 import learningsys.service.UsersService;
 import learningsys.utils.ResponseUtil;
@@ -25,12 +26,14 @@ public class ClassesController {
     private final ClassesService classesService;
     private final HistoriesService historiesService;
     private final UsersService usersService;
+    private final FavouritesService favouritesService;
 
     @Autowired
-    public ClassesController(ClassesService classesService, HistoriesService historiesService, UsersService usersService) {
+    public ClassesController(ClassesService classesService, HistoriesService historiesService, UsersService usersService, FavouritesService favouritesService) {
         this.classesService = classesService;
         this.historiesService = historiesService;
         this.usersService = usersService;
+        this.favouritesService = favouritesService;
     }
 
     @ApiOperation(value = "课程视频查询")
@@ -67,6 +70,7 @@ public class ClassesController {
             returnClass.setRate(0);
             if (session.getAttribute("userid") != null) {
                 try {
+                    returnClass.setFavourite(favouritesService.isFavourite(Integer.parseInt(session.getAttribute("userid").toString()), rowClasses.getId()));
                     Histories histories = historiesService.get(Integer.parseInt(session.getAttribute("userid").toString()), rowClasses.getId());
                     returnClass.setRate(histories.getRate());
                     historiesService.update(Integer.parseInt(session.getAttribute("userid").toString()), rowClasses.getId(), 0);

@@ -1,7 +1,5 @@
 package learningsys.service;
 
-import learningsys.entity.Favourites;
-
 import java.util.List;
 
 public interface FavouritesService {
@@ -11,4 +9,8 @@ public interface FavouritesService {
     boolean addFavourities(int userId, int classId);
 
     boolean delete(int userId, int id) throws Exception;
+
+    boolean isFavourite(int userId, int classId);
+
+    boolean addAndDelete(int userId, int classId) throws Exception;
 }

@@ -3,7 +3,6 @@ package learningsys.controller;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import learningsys.entity.Favourites;
-import learningsys.model.GetClassId;
 import learningsys.model.GetFavouriteId;
 import learningsys.model.ReturnFavourite;
 import learningsys.service.ClassesService;
@@ -28,20 +27,6 @@ public class FavouritesController {
     public FavouritesController(FavouritesService favouritesService, ClassesService classesService) {
         this.favouritesService = favouritesService;
         this.classesService = classesService;
-    }
-
-    @ApiOperation(value = "添加到收藏夹")
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseUtil addFavourites(@ApiParam(value = "课程id") @RequestBody GetClassId rowClasses, HttpSession session) {
-        Integer userId = null;
-        try {
-            userId = Integer.parseInt(session.getAttribute("userid").toString());
-        } catch (Exception e) {
-            return ResponseUtil.error(202, "未登录，请登陆后再进行操作");
-        }
-        favouritesService.addFavourities(userId, rowClasses.getId());
-        return ResponseUtil.success("收藏成功");
     }
 
     @ApiOperation(value = "查看收藏夹")
@@ -73,10 +58,10 @@ public class FavouritesController {
         return ResponseUtil.success().put("data", favouriteList);
     }
 
-    @ApiOperation(value = "删除收藏夹中某一记录")
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ApiOperation(value = "保存或删除收藏夹中某一记录")
+    @RequestMapping(value = "/addanddelete", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseUtil delete(@ApiParam(value = "收藏记录的id") @RequestBody GetFavouriteId rowFavourites, HttpSession session) {
+    public ResponseUtil addAndDelete(@ApiParam(value = "收藏的课程id") @RequestBody GetFavouriteId rowFavourites, HttpSession session) {
         Integer userId = null;
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
@@ -84,11 +69,11 @@ public class FavouritesController {
             return ResponseUtil.error(202, "未登录，请登陆后再进行操作");
         }
         try {
-            if (favouritesService.delete(userId, rowFavourites.getId())) {
-                return ResponseUtil.success();
+            if (favouritesService.addAndDelete(userId, rowFavourites.getId())) {
+                return ResponseUtil.success("操作成功");
             }
         } catch (Exception e) {
-            return ResponseUtil.error("收藏不存在");
+            return ResponseUtil.error("系统异常");
         }
         return ResponseUtil.error("当前用户不匹配！");
     }
