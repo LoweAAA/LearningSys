@@ -7,6 +7,7 @@ import learningsys.model.GetFavouriteId;
 import learningsys.model.ReturnFavourite;
 import learningsys.service.ClassesService;
 import learningsys.service.FavouritesService;
+import learningsys.service.impl.FavouritesServiceImpl;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -70,7 +71,11 @@ public class FavouritesController {
         }
         try {
             if (favouritesService.addAndDelete(userId, rowFavourites.getId())) {
-                return ResponseUtil.success("操作成功");
+                if (FavouritesServiceImpl.operator == 0) {
+                    return ResponseUtil.success("收藏成功");
+                } else {
+                    return ResponseUtil.success("取消收藏成功");
+                }
             }
         } catch (Exception e) {
             return ResponseUtil.error("系统异常");

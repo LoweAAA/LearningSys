@@ -16,6 +16,7 @@ import java.util.List;
 @Service
 public class FavouritesServiceImpl implements FavouritesService {
 
+    public static Integer operator = null;
     private final FavouritesDao favouritesDao;
 
     @Autowired
@@ -51,9 +52,11 @@ public class FavouritesServiceImpl implements FavouritesService {
             favourites.setClassid(classId);
             favourites.setTime(Timestamp.valueOf(LocalDateTime.now()));
             favouritesDao.save(favourites);
+            operator = 0;
             return true;
         } else {
             favouritesDao.deleteById(favourite.getId());
+            operator = 1;
             return true;
         }
     }
