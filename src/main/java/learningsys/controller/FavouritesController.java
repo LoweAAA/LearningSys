@@ -5,12 +5,16 @@ import io.swagger.annotations.ApiParam;
 import learningsys.entity.Favourites;
 import learningsys.model.GetClassId;
 import learningsys.model.GetFavouriteId;
+import learningsys.model.ReturnFavourite;
+import learningsys.service.ClassesService;
 import learningsys.service.FavouritesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/favourite")
@@ -18,10 +22,12 @@ import javax.servlet.http.HttpSession;
 public class FavouritesController {
 
     private final FavouritesService favouritesService;
+    private final ClassesService classesService;
 
     @Autowired
-    public FavouritesController(FavouritesService favouritesService) {
+    public FavouritesController(FavouritesService favouritesService, ClassesService classesService) {
         this.favouritesService = favouritesService;
+        this.classesService = classesService;
     }
 
     @ApiOperation(value = "添加到收藏夹")
@@ -32,7 +38,7 @@ public class FavouritesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202, "未登录，请登陆后再进行操作");
         }
         favouritesService.addFavourities(userId, rowClasses.getId());
         return ResponseUtil.success("收藏成功");
@@ -46,9 +52,25 @@ public class FavouritesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202, "未登录，请登陆后再进行操作");
         }
-        return ResponseUtil.success().put("data", favouritesService.query(userId));
+        List favourites = favouritesService.query(userId);
+        List<ReturnFavourite> favouriteList = new ArrayList<>();
+        for (Object aFavourite : favourites) {
+            ReturnFavourite returnFavourite = new ReturnFavourite();
+            Favourites favourite = (Favourites) aFavourite;
+            returnFavourite.setId(favourite.getId());
+            returnFavourite.setTime(favourite.getTime());
+            try {
+                returnFavourite.setClassName(classesService.getClass(favourite.getClassid()).getClassname());
+                returnFavourite.setClassDetail(classesService.getClass(favourite.getClassid()).getClassdetail());
+            } catch (Exception e) {
+                return ResponseUtil.error("课程已删除");
+            }
+            returnFavourite.setClassId(favourite.getClassid());
+            favouriteList.add(returnFavourite);
+        }
+        return ResponseUtil.success().put("data", favouriteList);
     }
 
     @ApiOperation(value = "删除收藏夹中某一记录")
@@ -59,7 +81,7 @@ public class FavouritesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202, "未登录，请登陆后再进行操作");
         }
         try {
             if (favouritesService.delete(userId, rowFavourites.getId())) {
