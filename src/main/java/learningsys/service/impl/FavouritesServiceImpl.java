@@ -36,35 +36,9 @@ public class FavouritesServiceImpl implements FavouritesService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean addFavourities(int userId, int classId) {
-        Favourites favourite = favouritesDao.findByClassidAndUserid(classId, userId);
-        if (favourite == null) {
-            Favourites favourites = new Favourites();
-            favourites.setUserid(userId);
-            favourites.setClassid(classId);
-            favourites.setTime(Timestamp.valueOf(LocalDateTime.now()));
-            favouritesDao.save(favourites);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean delete(int userId, int id) throws Exception {
-        Favourites favourites = favouritesDao.findById(id).get();
-        if (favourites.getUserid() == userId) {
-            favouritesDao.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public boolean isFavourite(int userId, int classId) {
         Favourites favourite = favouritesDao.findByClassidAndUserid(classId, userId);
-        return favourite == null;
+        return favourite != null;
     }
 
     @Override
