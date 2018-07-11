@@ -4,12 +4,16 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import learningsys.entity.Histories;
 import learningsys.model.GetHistory;
+import learningsys.model.ReturnHistory;
+import learningsys.service.ClassesService;
 import learningsys.service.HistoriesService;
 import learningsys.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/history")
@@ -17,10 +21,12 @@ import javax.servlet.http.HttpSession;
 public class HistoriesController {
 
     private final HistoriesService historiesService;
+    private final ClassesService classesService;
 
     @Autowired
-    public HistoriesController(HistoriesService historiesService) {
+    public HistoriesController(HistoriesService historiesService, ClassesService classesService) {
         this.historiesService = historiesService;
+        this.classesService = classesService;
     }
 
     @ApiOperation(value = "查看历史记录")
@@ -30,9 +36,25 @@ public class HistoriesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202, "未登录，请登陆后再进行操作");
         }
-        return ResponseUtil.success().put("data", historiesService.query(userId));
+        List favourites = historiesService.query(userId);
+        List<ReturnHistory> historyList = new ArrayList<>();
+        for (Object aHistory : favourites) {
+            ReturnHistory returnFavourite = new ReturnHistory();
+            Histories historie = (Histories) aHistory;
+            returnFavourite.setId(historie.getId());
+            returnFavourite.setTime(historie.getTime());
+            try {
+                returnFavourite.setClassName(classesService.getClass(historie.getClassid()).getClassname());
+                returnFavourite.setClassDetail(classesService.getClass(historie.getClassid()).getClassdetail());
+            } catch (Exception e) {
+                return ResponseUtil.error("课程已删除");
+            }
+            returnFavourite.setClassId(historie.getClassid());
+            historyList.add(returnFavourite);
+        }
+        return ResponseUtil.success().put("data", historyList);
     }
 
     @ApiOperation(value = "清空历史记录")
@@ -42,7 +64,7 @@ public class HistoriesController {
         try {
             userId = Integer.parseInt(session.getAttribute("userid").toString());
         } catch (Exception e) {
-            return ResponseUtil.error(202,"未登录，请登陆后再进行操作");
+            return ResponseUtil.error(202, "未登录，请登陆后再进行操作");
         }
         historiesService.delete(userId);
         return ResponseUtil.success("清空成功");
