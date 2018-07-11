@@ -16,6 +16,6 @@ public interface HistoriesDao extends CrudRepository<Histories, Integer> {
     Histories findByUseridAndClassid(int userId, int classId);
 
     @Modifying
-    @Query(value = "DELETE FROM Histories h WHERE h.userid = :userId")
-    boolean deleteByUserid(int userId);
+    @Query(value = "DELETE FROM Histories h WHERE h.userid = ?1")
+    Integer deleteByUserid(int userId);
 }

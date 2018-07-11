@@ -14,5 +14,5 @@ public interface HistoriesService {
 
     boolean delete(int userId);
 
-    boolean update(int userId, int id, double rate) throws Exception;
+    boolean update(int userId, int classId, double rate) throws Exception;
 }

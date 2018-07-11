@@ -50,7 +50,7 @@ public class HistoriesServiceImpl implements HistoriesService {
     }
 
     @Override
-    public Histories get(int userId, int classesId){
+    public Histories get(int userId, int classesId) {
         return historiesDao.findByUseridAndClassid(userId, classesId);
     }
 
@@ -67,9 +67,9 @@ public class HistoriesServiceImpl implements HistoriesService {
     }
 
     @Override
-    public boolean update(int userId, int id, double rate) throws Exception {
-        Histories histories = historiesDao.findById(id).get();
-        if (histories.getUserid() == userId) {
+    public boolean update(int userId, int classId, double rate) throws Exception {
+        Histories histories = historiesDao.findByUseridAndClassid(userId, classId);
+        if (histories != null) {
             histories.setRate(rate);
             histories.setTime(Timestamp.valueOf(LocalDateTime.now()));
             historiesDao.save(histories);

@@ -78,7 +78,7 @@ public class HistoriesController {
             Integer userId = Integer.parseInt(session.getAttribute("userid").toString());
             Histories histories = historiesService.get(userId, rowHistories.getClassId());
             try {
-                historiesService.update(userId, histories.getId(), rowHistories.getRate());
+                historiesService.update(userId, histories.getClassid(), rowHistories.getRate());
                 return ResponseUtil.success();
             } catch (Exception e) {
                 return ResponseUtil.success("历史记录不存在");
