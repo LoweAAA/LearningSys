@@ -6,17 +6,23 @@ import learningsys.entity.Classes;
 import learningsys.entity.Histories;
 import learningsys.model.GetClassId;
 import learningsys.model.GetClassName;
+import learningsys.model.GetPath;
 import learningsys.model.ReturnClass;
 import learningsys.service.ClassesService;
 import learningsys.service.FavouritesService;
 import learningsys.service.HistoriesService;
 import learningsys.service.UsersService;
 import learningsys.utils.ResponseUtil;
+import learningsys.utils.Upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/class")
@@ -27,13 +33,15 @@ public class ClassesController {
     private final HistoriesService historiesService;
     private final UsersService usersService;
     private final FavouritesService favouritesService;
+    private final Upload upload;
 
     @Autowired
-    public ClassesController(ClassesService classesService, HistoriesService historiesService, UsersService usersService, FavouritesService favouritesService) {
+    public ClassesController(ClassesService classesService, HistoriesService historiesService, UsersService usersService, FavouritesService favouritesService, Upload upload) {
         this.classesService = classesService;
         this.historiesService = historiesService;
         this.usersService = usersService;
         this.favouritesService = favouritesService;
+        this.upload = upload;
     }
 
     @ApiOperation(value = "课程视频查询")
@@ -81,6 +89,47 @@ public class ClassesController {
             return ResponseUtil.success().put("data", returnClass);
         } catch (Exception e) {
             return ResponseUtil.error("未找到对应课程");
+        }
+    }
+
+    @ApiOperation(value = "视频上传")
+    @ResponseBody
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public ResponseUtil uploadImg(@RequestParam MultipartFile file, @RequestParam String name, @RequestParam String desc, @RequestParam Integer userId) {
+
+        // 获取文件名
+        String fileName = file.getOriginalFilename();
+        // 获取文件后缀
+        String prefix = fileName.substring(fileName.lastIndexOf("."));
+        // 用uuid作为文件名，防止生成的临时文件重复
+        final File excelFile;
+        try {
+            Random random = new Random();
+            excelFile = File.createTempFile(random.toString(), prefix);
+            file.transferTo(excelFile);
+            String url = upload.upload(excelFile);
+            if (url != null) {
+                if (classesService.save(name, url, 0, userId, desc)) {
+                    deleteFile(excelFile);
+                    return ResponseUtil.success("上传成功");
+                } else {
+                    return ResponseUtil.error("视频已存在");
+                }
+            } else {
+                deleteFile(excelFile);
+                return ResponseUtil.error("上传失败");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseUtil.error("报错失败");
+        }
+    }
+
+    private void deleteFile(File... files) {
+        for (File file : files) {
+            if (file.exists()) {
+                file.delete();
+            }
         }
     }
 }

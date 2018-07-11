@@ -27,4 +27,20 @@ public class ClassesServiceImpl implements ClassesService {
     public Classes getClass(int classId) throws Exception {
         return classesDao.findById(classId).get();
     }
+
+    @Override
+    public boolean save(String className, String classUrl, int price, int userId, String classDetail) {
+        Classes classes = new Classes();
+        classes.setClassurl(classUrl);
+        classes.setClassteacher(userId);
+        classes.setClassprice(price);
+        classes.setClassname(className);
+        classes.setClassdetail(classDetail);
+        if (classesDao.findByClassurl(classUrl).size() > 0) {
+            return false;
+        } else {
+            classesDao.save(classes);
+            return true;
+        }
+    }
 }

@@ -9,4 +9,6 @@ public interface ClassesService {
     List query(String className);
 
     Classes getClass(int classId) throws Exception;
+
+    boolean save(String className,String classUrl,int price,int userId,String classDetail);
 }

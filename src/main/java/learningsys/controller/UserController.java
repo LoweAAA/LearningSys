@@ -1,6 +1,7 @@
 package learningsys.controller;
 
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import learningsys.entity.Users;
@@ -53,6 +54,14 @@ public class UserController {
         } catch (Exception e) {
             return ResponseUtil.error("注册失败");
         }
+    }
+
+    @ApiOperation(value = "退出登录")
+    @ResponseBody
+    @RequestMapping(value = "/exit", method = RequestMethod.POST)
+    public ResponseUtil uploadImg(HttpSession session) {
+        session.removeAttribute("userid");
+        return ResponseUtil.success("退出成功！");
     }
 
 }
