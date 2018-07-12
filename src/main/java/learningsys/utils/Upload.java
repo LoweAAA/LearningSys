@@ -3,6 +3,7 @@ package learningsys.utils;
 import com.google.gson.Gson;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
@@ -16,8 +17,8 @@ public class Upload {
     private Auth auth = Auth.create("MJSiM19VwA8I62yT92vKk2nxIGjyc8FMjYfTSPsK", "reKiLulS_QCg2npf9VhGYse43Rth7VVHfMb9it21");
     private UploadManager uploadManager = new UploadManager();
 
-    private String getUpToken() {
-        return auth.uploadToken("hduzjh");
+    public String getUpToken() {
+        return auth.uploadToken("hduzjh", null, 36000, null);
     }
 
     public String upload(File file) {
@@ -31,4 +32,15 @@ public class Upload {
         }
     }
 
+    public void delete(String key) {
+        BucketManager bucketMgr = new BucketManager(auth);
+
+        String bucketName = "hduzjh";
+        try {
+            bucketMgr.delete(bucketName, key);
+        } catch (QiniuException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

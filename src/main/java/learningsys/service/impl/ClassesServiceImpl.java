@@ -4,8 +4,10 @@ import learningsys.entity.Classes;
 import learningsys.repository.ClassesDao;
 import learningsys.service.ClassesService;
 import learningsys.utils.AipNipClient;
+import learningsys.utils.Upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,31 +24,28 @@ public class ClassesServiceImpl implements ClassesService {
 
     @Override
     public List<Classes> query(String className) {
-
-
-        AipNipClient aipNipClient=new AipNipClient();
-
-        List<String> strings=aipNipClient.appartString(className);
-        List<Classes> classes=new ArrayList<Classes>();
-
-        for(int i=0;i<strings.size();i++){
-
-            List<Classes> tem=classesDao.findByClassnameLike("%" + strings.get(i) + "%");
-
-            for(int j=0;j<tem.size();j++){
-                int flag=0;
-                for(int k=0;k<classes.size();k++){
-                    if(tem.get(j).getId()==classes.get(k).getId()){
-                        flag=1;
+        AipNipClient aipNipClient = new AipNipClient();
+        if (className != null && !"".equals(className)) {
+            List<String> strings = aipNipClient.appartString(className);
+            List<Classes> classes = new ArrayList<Classes>();
+            for (String string : strings) {
+                List<Classes> tem = classesDao.findByClassnameLike("%" + string + "%");
+                for (Classes aTem : tem) {
+                    int flag = 0;
+                    for (Classes aClass : classes) {
+                        if (aTem.getId() == aClass.getId()) {
+                            flag = 1;
+                        }
+                    }
+                    if (flag == 0) {
+                        classes.add(aTem);
                     }
                 }
-                if(flag==0){
-                    classes.add(tem.get(j));
-                }
             }
-
+            return classes;
+        } else {
+            return classesDao.findByClassnameLike("%" + className + "%");
         }
-        return classes;
     }
 
     @Override
@@ -68,5 +67,26 @@ public class ClassesServiceImpl implements ClassesService {
             classesDao.save(classes);
             return true;
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean delete(int classId, int userId) throws Exception {
+        int teacherId = classesDao.findById(classId).get().getClassteacher();
+        if (teacherId == userId) {
+            Upload upload = new Upload();
+            String className = classesDao.findById(classId).get().getClassurl();
+            System.out.println(className);
+            System.out.println(className.substring(33, className.length()));
+            upload.delete(className);
+            classesDao.deleteByClassid(classId);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List getTeacher(int userId) {
+        return classesDao.findByClassteacher(userId);
     }
 }

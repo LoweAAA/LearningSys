@@ -10,5 +10,9 @@ public interface ClassesService {
 
     Classes getClass(int classId) throws Exception;
 
-    boolean save(String className,String classUrl,int price,int userId,String classDetail);
+    boolean save(String className, String classUrl, int price, int userId, String classDetail);
+
+    boolean delete(int classId, int userId) throws Exception;
+
+    List getTeacher(int userId);
 }

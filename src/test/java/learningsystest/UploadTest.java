@@ -8,7 +8,13 @@ public class UploadTest {
     Upload upload = new Upload();
 
     @Test
-    public void testGetUpToken() {
-//        System.out.println(upload.up("E:\\文档\\pictures\\1339770415979.jpg"));
+    public void testDelete() {
+        upload.delete("FpBXvn9-2Xpr3hgxm3CQRRc_-RyV");
+    }
+
+    @Test
+    public void testString() {
+        String url = "http://owmhe4011.bkt.clouddn.com/lnkZGgQpJU-5WANHkDwzIyC0yISj";
+        System.out.println(url.substring(33, url.length()));
     }
 }

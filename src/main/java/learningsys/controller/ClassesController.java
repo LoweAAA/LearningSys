@@ -4,9 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import learningsys.entity.Classes;
 import learningsys.entity.Histories;
+import learningsys.model.GetClass;
 import learningsys.model.GetClassId;
 import learningsys.model.GetClassName;
-import learningsys.model.GetPath;
 import learningsys.model.ReturnClass;
 import learningsys.service.ClassesService;
 import learningsys.service.FavouritesService;
@@ -16,13 +16,9 @@ import learningsys.utils.ResponseUtil;
 import learningsys.utils.Upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/class")
@@ -95,41 +91,47 @@ public class ClassesController {
     @ApiOperation(value = "视频上传")
     @ResponseBody
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ResponseUtil uploadImg(@RequestParam MultipartFile file, @RequestParam String name, @RequestParam String desc, @RequestParam Integer userId) {
+    public ResponseUtil upload() {
+        return ResponseUtil.success().put("token", upload.getUpToken());
+    }
 
-        // 获取文件名
-        String fileName = file.getOriginalFilename();
-        // 获取文件后缀
-        String prefix = fileName.substring(fileName.lastIndexOf("."));
-        // 用uuid作为文件名，防止生成的临时文件重复
-        final File excelFile;
-        try {
-            Random random = new Random();
-            excelFile = File.createTempFile(random.toString(), prefix);
-            file.transferTo(excelFile);
-            String url = upload.upload(excelFile);
-            if (url != null) {
-                if (classesService.save(name, url, 0, userId, desc)) {
-                    deleteFile(excelFile);
-                    return ResponseUtil.success("上传成功");
-                } else {
-                    return ResponseUtil.error("视频已存在");
-                }
-            } else {
-                deleteFile(excelFile);
-                return ResponseUtil.error("上传失败");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseUtil.error("报错失败");
+    @ApiOperation(value = "保存记录")
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public ResponseUtil save(@RequestBody GetClass getClass) {
+        if (classesService.save(getClass.getName(), getClass.getLessonUrl(), 0, getClass.getUserId(), getClass.getDesc())) {
+            return ResponseUtil.success("保存成功");
+        } else {
+            return ResponseUtil.error("视频已存在");
         }
     }
 
-    private void deleteFile(File... files) {
-        for (File file : files) {
-            if (file.exists()) {
-                file.delete();
-            }
+    @ApiOperation(value = "删除视频")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public ResponseUtil delete(@RequestBody GetClassId getClassId, HttpSession session) {
+        Integer userId = null;
+        try {
+            userId = Integer.parseInt(session.getAttribute("userid").toString());
+        } catch (Exception e) {
+            return ResponseUtil.error(202, "未登录，请登陆后再进行操作");
         }
+        try {
+            classesService.delete(getClassId.getId(), userId);
+            return ResponseUtil.success("删除成功");
+        } catch (Exception e) {
+            return ResponseUtil.error("删除失败");
+        }
+    }
+
+    @ApiOperation(value = "查找某位老师的视频")
+    @RequestMapping(value = "/getteacher", method = RequestMethod.POST)
+    public ResponseUtil getteacher(HttpSession session) {
+        Integer userId = null;
+        try {
+            userId = Integer.parseInt(session.getAttribute("userid").toString());
+        } catch (Exception e) {
+            return ResponseUtil.error(202, "未登录，请登陆后再进行操作");
+        }
+        List classes = classesService.getTeacher(userId);
+        return ResponseUtil.success().put("data", classes);
     }
 }
